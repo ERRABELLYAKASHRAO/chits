@@ -1,0 +1,13 @@
+
+services:
+  - type: web
+    name: sarithachits
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn sarithachits.wsgi"
+    autoDeploy: true
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        value: 'django-insecure-n_*_2y8*vu=66s=xs8=!b@=mlx*u7uc#__+tt0qs+e)w4e8bjc'
+      - key: DEBUG
+        value: False

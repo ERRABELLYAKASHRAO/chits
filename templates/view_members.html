@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="min-h-screen bg-gradient-to-tr from-purple-100 via-pink-100 to-yellow-100 p-4 md:p-10">
+
+    <h2 class="text-3xl md:text-4xl font-extrabold text-center text-purple-800 mb-10 animate-fade-in-down tracking-wide drop-shadow-lg">
+         Chit Members List
+    </h2>
+
+    {% if members %}
+    <div class="overflow-x-auto shadow-2xl rounded-3xl bg-white/60 backdrop-blur-lg p-6 animate-slide-up-smooth">
+        <table class="min-w-full text-sm md:text-base text-gray-700">
+            <thead>
+                <tr class="bg-purple-200 text-purple-900 text-left uppercase text-xs md:text-sm tracking-wider">
+                    <th class="py-3 px-5 rounded-tl-2xl">Name</th>
+                    <th class="py-3 px-5">Phone</th>
+                    <th class="py-3 px-5">Plan</th>
+                    <th class="py-3 px-5">Chitti Lifted</th>
+                    <th class="py-3 px-5 rounded-tr-2xl">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for member in members %}
+                <tr class="border-b border-purple-100 hover:bg-purple-50 hover:shadow-lg transition-all duration-300 rounded-xl">
+                    <td class="py-3 px-5 font-semibold text-gray-800">{{ member.name }}</td>
+                    <td class="py-3 px-5">{{ member.phone }}</td>
+                    <td class="py-3 px-5 font-medium text-green-700">₹{{ member.plan }}</td>
+                    <td class="py-3 px-5">
+                        {% if member.chitti_lifted %}
+                            <span class="bg-green-200 text-green-900 px-3 py-1 rounded-full text-xs font-semibold">✅ Yes</span>
+                        {% else %}
+                            <span class="bg-red-200 text-red-900 px-3 py-1 rounded-full text-xs font-semibold">❌ No</span>
+                        {% endif %}
+                    </td>
+                    <td class="py-3 px-5 space-x-3">
+                        <a href="{% url 'member_detail' member.id %}" class="inline-block text-white bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded-full text-xs shadow-md transition-all duration-200">View</a>
+                        <a href="{% url 'delete_member' member.id %}" onclick="return confirm('Are you sure?')" class="inline-block text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded-full text-xs shadow-md transition-all duration-200">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <p class="text-center text-gray-600 text-lg mt-10 animate-fade-in-down">😔 No members found in this plan.</p>
+    {% endif %}
+</div>
+
+<!-- Animations -->
+<style>
+    .animate-fade-in-down {
+        animation: fadeInDown 1s ease-out;
+    }
+
+    .animate-slide-up-smooth {
+        animation: slideUp 1s ease-in-out;
+    }
+
+    @keyframes fadeInDown {
+        from { transform: translateY(-30px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(40px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+</style>
+
+{% endblock %}

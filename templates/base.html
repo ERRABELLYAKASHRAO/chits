@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Saritha Chits</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        ::selection {
+            background-color: #c084fc;
+            color: white;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .glass {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-pink-100 to-purple-200 text-gray-800">
+
+<!-- Navbar -->
+<!-- Navbar -->
+<nav class="glass shadow-xl fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-lg bg-white/70 border-b border-white/30">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+        <!-- Logo -->
+        <a href="{% url 'home' %}" class="text-3xl font-extrabold text-indigo-700 hover:text-purple-700 hover:tracking-wide transition-all duration-300">
+            ✨ Saritha Chits
+        </a>
+
+        <!-- Mobile Hamburger -->
+        <div class="md:hidden" x-data="{ open: false }">
+            <button @click="open = !open" class="text-indigo-700 focus:outline-none transition-transform hover:scale-110">
+                <svg x-show="!open" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+                <svg x-show="open" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+
+            <!-- Mobile Dropdown Menu -->
+            <div x-show="open" x-transition
+                 class="absolute right-4 mt-2 w-60 bg-white shadow-2xl rounded-xl py-5 px-4 space-y-3 z-50 text-base font-semibold text-gray-700 border border-gray-200">
+                <a href="{% url 'home' %}" class="block hover:text-purple-600">🏠 Home</a>
+
+                {% if request.session.mom_authenticated %}
+                    <a href="{% url 'logout' %}" class="block text-red-500 hover:text-red-600">🔓 Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="block hover:text-purple-600">👩‍💼 Admin</a>
+                {% endif %}
+
+
+                {% if request.session.mom_authenticated %}
+                    <a href="{% url 'add_member' %}" class="block hover:text-purple-600">➕ Add Member</a>
+                    <a href="{% url 'view_members' %}" class="block hover:text-purple-600">👥 View Members</a>
+                    <a href="{% url 'monthly_tracker' %}" class="block hover:text-purple-600">📅 Monthly Tracker</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex space-x-8 text-base items-center font-semibold">
+            <a href="{% url 'home' %}" class="hover:text-purple-700 transition">Home</a>
+
+            {% if request.session.mom_authenticated %}
+                <a href="{% url 'logout' %}" class="text-red-600 hover:text-red-700 transition">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="hover:text-purple-700 transition">Admin</a>
+            {% endif %}
+
+            {% if request.session.mom_authenticated %}
+                <a href="{% url 'add_member' %}" class="hover:text-purple-700 transition">Add Member</a>
+                <a href="{% url 'view_members' %}" class="hover:text-purple-700 transition">View Members</a>
+                <a href="{% url 'monthly_tracker' %}" class="hover:text-purple-700 transition">Monthly Tracker</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+
+<!-- Page Content -->
+<div class="pt-24 px-4">
+    {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>
