@@ -72,28 +72,36 @@ def mom_logout(request):
 def add_member(request):
     if request.method == 'POST':
         name = request.POST.get('name')
-        phone = request.POST.get('phone')
         plan = request.POST.get('plan')
         chitti_lifted = request.POST.get('chitti_lifted') == 'on'
-        Member.objects.create(name=name, phone=phone, plan=plan, chitti_lifted=chitti_lifted)
+        chitti_start_date = request.POST.get('chitti_start_date')  # 👈 NEW
+
+        Member.objects.create(
+            name=name,
+            plan=plan,
+            chitti_lifted=chitti_lifted,
+            chitti_start_date=chitti_start_date  # 👈 ADDED
+        )
         return redirect('view_members')
     return render(request, 'add_member.html')
+
 
 
 # 👀 View Members
 @require_mom_auth
 def view_members(request, plan=None):
-    if plan == '10000' or plan == '20000':
+    if plan in ['5000', '10000', '20000']:
         members = Member.objects.filter(plan=plan)
     else:
         members = Member.objects.all()
     return render(request, 'view_members.html', {'members': members})
 
+
 @require_mom_auth
 
 def view_members_by_plan(request, plan):
     members = Member.objects.filter(group__plan_amount=plan).order_by('-created_at')
-    return render(request, 'view_members_by_plan.html', {'members': members, 'plan': plan})
+    return render(request, 'view_members.html', {'members': members, 'plan': plan})
 
 # ❌ Delete Member
 @require_mom_auth
