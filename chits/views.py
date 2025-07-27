@@ -149,6 +149,9 @@ def mark_unpaid(request, history_id):
     return redirect('monthly_tracker')
 
 
+from django.shortcuts import render
+from django.http import HttpResponse
+
 def plan_table(request, amount):
     rows = []
 
@@ -164,8 +167,15 @@ def plan_table(request, amount):
             rows.append({'sno': i, 'amount': amount, 'total': total})
             total += 2500
 
+    elif amount == 5000:
+        total = 95000
+        for i in range(1, 21):  # 20 months
+            rows.append({'sno': i, 'amount': amount, 'total': total})
+            total += 1000  # Increase by 1k each month
+
     else:
         return HttpResponse("Invalid plan amount", status=400)
 
     return render(request, 'plan_table.html', {'amount': amount, 'rows': rows})
+
 

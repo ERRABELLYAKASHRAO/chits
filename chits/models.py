@@ -1,5 +1,7 @@
 from django.db import models
 from datetime import date
+from django.utils import timezone  
+
 
 PLAN_CHOICES = (
     ('10000', '₹10,000'),
@@ -8,7 +10,7 @@ PLAN_CHOICES = (
 
 class Member(models.Model):
     name = models.CharField(max_length=100)
-    phone = models.CharField(max_length=15)
+    chitti_start_date = models.DateField(default=timezone.now)
     plan = models.CharField(max_length=10, choices=PLAN_CHOICES)
     chitti_lifted = models.BooleanField(default=False)
 
