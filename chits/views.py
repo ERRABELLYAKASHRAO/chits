@@ -25,37 +25,13 @@ def home(request):
         'members_20k': members_20k
     })
 
-def public_plan_table(request, plan_amount):
-    if plan_amount not in ['10000', '20000']:
-        return HttpResponse("Invalid Plan", status=400)
-    members = Member.objects.filter(plan=plan_amount)
-    return render(request, 'plan_table.html', {
-        'members': members,
-        'plan': plan_amount
-    })
-
-
-
-
-def plan_table(request, amount):
-    if amount not in [10000, 20000] and not request.session.get("mom_authenticated"):
-        return redirect('mom_login')
-
-    members = Member.objects.filter(plan=amount)
-    return render(request, 'plan_table.html', {
-        'amount': amount,
-        'members': members
-    })
-
-
-
 # 🔐 Login
 def mom_login(request):
     if request.method == 'POST':
         password = request.POST.get('password')
         if password == MOM_PASSWORD:
             request.session['mom_authenticated'] = True
-            return redirect('view_members')
+            return redirect('add_member')
         else:
             return render(request, 'login.html', {'error': 'Invalid password'})
     return render(request, 'login.html')
@@ -97,11 +73,6 @@ def view_members(request, plan=None):
     return render(request, 'view_members.html', {'members': members})
 
 
-@require_mom_auth
-
-def view_members_by_plan(request, plan):
-    members = Member.objects.filter(group__plan_amount=plan).order_by('-created_at')
-    return render(request, 'view_members.html', {'members': members, 'plan': plan})
 
 # ❌ Delete Member
 @require_mom_auth

@@ -7,7 +7,6 @@ urlpatterns = [
     path('logout/', views.mom_logout, name='logout'),
     path('add-member/', views.add_member, name='add_member'),
     path('view-members/', views.view_members, name='view_members'),
-    path('view-members/<str:plan>/', views.view_members, name='view_members_by_plan'),
     path('member/<int:member_id>/', views.member_detail, name='member_detail'),
     path('monthly-tracker/', views.monthly_tracker, name='monthly_tracker'),
     path('mark-paid/<int:history_id>/', views.mark_paid, name='mark_paid'),

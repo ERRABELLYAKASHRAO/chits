@@ -6,6 +6,7 @@ from django.utils import timezone
 PLAN_CHOICES = (
     ('10000', '₹10,000'),
     ('20000', '₹20,000'),
+    ('5000','5000')
 )
 
 class Member(models.Model):
